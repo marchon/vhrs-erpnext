@@ -16,6 +16,12 @@ class JobOpening(WebsiteGenerator):
 		page_title_field = "job_title",
 	)
 
+
+	
+	def get_route(self):
+		return 'jobs/' + quoted(self.page_name)
+
+
 	def validate(self):
 		if not self.route:
 			self.route = frappe.scrub(self.job_title).replace('_', '-')
@@ -26,3 +32,5 @@ class JobOpening(WebsiteGenerator):
 def get_list_context(context):
 	context.title = _("Jobs")
 	context.introduction = _('Current Job Openings')
+	context.show_sidebar=True
+	context.show_search=True

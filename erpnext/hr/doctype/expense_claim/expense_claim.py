@@ -95,7 +95,7 @@ class ExpenseClaim(AccountsController):
 	def get_gl_entries(self):
 		gl_entry = []
 		self.validate_account_details()
-		
+
 		# payable entry
 		gl_entry.append(
 			self.get_gl_dict({
@@ -191,7 +191,7 @@ class ExpenseClaim(AccountsController):
 				expense.default_account = get_expense_claim_account(expense.expense_type, self.company)["account"]
 
 def update_reimbursed_amount(doc):
-	amt = frappe.db.sql("""select ifnull(sum(debit_in_account_currency), 0) as amt 
+	amt = frappe.db.sql("""select ifnull(sum(debit_in_account_currency), 0) as amt
 		from `tabGL Entry` where against_voucher_type = 'Expense Claim' and against_voucher = %s
 		and party = %s """, (doc.name, doc.employee) ,as_dict=1)[0].amt
 
@@ -206,7 +206,7 @@ def get_expense_approver(doctype, txt, searchfield, start, page_len, filters):
 	return frappe.db.sql("""
 		select u.name, concat(u.first_name, ' ', u.last_name)
 		from tabUser u, `tabHas Role` r
-		where u.name = r.parent and r.role = 'Expense Approver' 
+		where u.name = r.parent and r.role = 'Expense Approver'
 		and u.enabled = 1 and u.name like %s
 	""", ("%" + txt + "%"))
 
@@ -249,11 +249,11 @@ def make_bank_entry(dt, dn):
 def get_expense_claim_account(expense_claim_type, company):
 	account = frappe.db.get_value("Expense Claim Account",
 		{"parent": expense_claim_type, "company": company}, "default_account")
-	
+
 	if not account:
 		frappe.throw(_("Please set default account in Expense Claim Type {0}")
 			.format(expense_claim_type))
-	
+
 	return {
 		"account": account
 	}
